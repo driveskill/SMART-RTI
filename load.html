@@ -1,320 +1,238 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart RTI</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-    }
+ <!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Smart RTI Login</title>  
+<style>  
+  /* ===== GLOBAL ===== */  
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }  
+  body, html { height:100%; overflow-x:hidden; background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364); background-size: 400% 400%; animation: gradientBG 20s ease infinite; display:flex; justify-content:center; align-items:center; padding:20px; }  
+  @keyframes gradientBG { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }  /* ===== CONTAINER ===== */
+.container { width:100%; max-width:400px; background: rgba(0,0,0,0.5); backdrop-filter: blur(15px); border-radius:20px; padding:25px 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color:#fff; animation: fadeIn 1s ease; transition: all 0.4s ease; }
 
-    /* ===== Hero Section ===== */
-    .hero {
-      height: 90vh;
-      background: linear-gradient(135deg, #90ee90, #32cd32); /* attractive green gradient */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      color: white;
-      position: relative;
-    }
+/* ===== HEADER ===== */
+.menu-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.menu-bar h2 { font-size:28px; font-weight:900; text-align:center; color:#ffd700; text-shadow: 0 0 5px #fff,0 0 10px #ff7e5f; animation: glow 2s ease-in-out infinite alternate; flex:1; }
+@keyframes glow { from {text-shadow: 0 0 10px #fff,0 0 20px #ffd700;} to {text-shadow: 0 0 20px #ff7e5f,0 0 30px #ffd700;} }
+.menu-toggle { font-size:28px; cursor:pointer; color:#fff; margin-left:10px; }
 
-    .logo {
-      width: 200px;
-      height: auto;
-      margin-bottom: 20px;
-      z-index: 2;
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-    }
+/* ===== MENU ITEMS ===== */
+.menu-items { display:none; flex-direction:column; margin-bottom:15px; gap:8px; }
+.menu-items button { background:#ff7e5f; padding:10px; font-size:14px; border-radius:8px; border:none; cursor:pointer; transition:0.3s; }
+.menu-items button:hover { background:#feb47b; }
 
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 700;
-      z-index: 2;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
+/* ===== FORMS ===== */
+form { display:flex; flex-direction:column; gap:10px; animation: slideIn 0.5s ease; font-size:14px; }
+input, button { padding:10px; border-radius:8px; border:none; outline:none; font-size:14px; }
+input { background: rgba(255,255,255,0.15); color:#fff; }
+input::placeholder { color: rgba(255,255,255,0.7); }
+input:focus { background: rgba(255,255,255,0.25); box-shadow: 0 0 8px #ffd700; }
+button { background:#ff7e5f; color:#fff; font-weight:600; cursor:pointer; transition:0.3s; }
+button:hover { background:#feb47b; transform: scale(1.03); }
 
-    .hero h1 span {
-      font-style: italic;
-      font-weight: 300;
-    }
+@keyframes fadeIn { from{opacity:0; transform: translateY(-10px);} to{opacity:1; transform: translateY(0);} }
+@keyframes slideIn { from{opacity:0; transform: translateY(-10px);} to{opacity:1; transform: translateY(0);} }
 
-    .hero p {
-      font-size: 18px;
-      margin-top: 10px;
-      z-index: 2;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-    }
+/* ===== LINKS ===== */
+p { font-size:12px; text-align:center; }
+p span { cursor:pointer; color:#00fff7; font-weight:600; }
+p span:hover { text-decoration:underline; text-shadow:0 0 5px #00fff7; }
 
-    .btn {
-      margin-top: 20px;
-      padding: 15px 40px;
-      background: #ffffff;
-      color: #000;
-      font-size: 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      font-weight: bold;
-      z-index: 2;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+/* ===== MODAL ===== */
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000; }
+.modal-content { background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); border-radius:20px; padding:20px; width:90%; max-width:400px; color:#fff; box-shadow:0 8px 32px rgba(0,0,0,0.5); animation:fadeIn 0.5s ease; position:relative; }
+.close-btn { position:absolute; top:15px; right:20px; font-size:24px; cursor:pointer; color:#fff; }
 
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 2px 6px 15px rgba(0,0,0,0.3);
-    }
+/* ===== RESPONSIVE ===== */
+@media(max-width:450px) {
+.container { padding:20px; }
+.menu-bar h2 { font-size:24px; }
+}
 
-    /* ===== Sliding Banner ===== */
-    .slider {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      z-index: 3;
-    }
+/* ===== AI NOTIFICATION ===== */
+#aiNotification {
+position: fixed;
+top: 20px;
+right: 20px;
+background: #0066ff;
+color: white;
+padding: 15px 20px;
+border-radius: 12px;
+box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+display: none;
+z-index: 10000;
+font-family: Arial, sans-serif;
+max-width: 250px;
+text-align: center;
+font-size: 14px;
+}
+</style>
 
-    .slide-text {
-      display: inline-block;
-      white-space: nowrap;
-      animation: slide 10s linear infinite;
-    }
+</head>  
+<body>  <div class="container">  
+  <div class="menu-bar">  
+    <h2>SMART RTI</h2>  
+    <span id="menuToggle" class="menu-toggle">☰</span>  
+  </div>    <div class="menu-items" id="menuItems">  
+    <button onclick="showLogin(); closeMenu()">Login</button>  
+    <button onclick="showRegister(); closeMenu()">Register</button>  
+    <button onclick="openOfficerLogin(); closeMenu()">Officer</button>  
+  </div>    <div id="auth-section">  
+    <!-- LOGIN -->  
+    <form id="login-form">  
+      <input type="email" id="loginEmail" placeholder="Email" required>  
+      <input type="password" id="loginPassword" placeholder="Password" required>  
+      <button type="button" onclick="loginUser()">Login</button>  
+      <p><span onclick="showForgot()">Forgot Password?</span></p>  
+      <p>Don't have account? <span onclick="showRegister()">Register</span></p>  
+    </form>  
+    <!-- REGISTER -->  
+    <form id="register-form" style="display:none;">  
+      <input type="text" id="regName" placeholder="Full Name" required>  
+      <input type="email" id="regEmail" placeholder="Email" required>  
+      <input type="text" id="regMobile" placeholder="Mobile Number" required>  
+      <input type="password" id="regPassword" placeholder="Password" required>  
+      <button type="button" onclick="registerUser()">Register</button>  
+      <p>Already have account? <span onclick="showLogin()">Login</span></p>  
+    </form>  <!-- FORGOT PASSWORD -->  
+<form id="forgot-form" style="display:none;">  
+  <input type="email" id="forgotEmail" placeholder="Enter your email" required>  
+  <button type="button" onclick="forgotPassword()">Reset Password</button>  
+  <p>Back to <span onclick="showLogin()">Login</span></p>  
+</form>
 
-    @keyframes slide {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* ===== Language Button ===== */
-    #langButton {
-      margin-top: 15px; /* below login button */
-      padding: 12px 25px;
-      background: #ffd700; /* visible */
-      color: #000;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    #langButton:hover {
-      transform: translateY(-2px);
-      box-shadow: 2px 6px 12px rgba(0,0,0,0.3);
-    }
-
-    /* ===== Info Sections ===== */
-    .info {
-      background: #ffffff;
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    .info h2 {
-      font-size: 28px;
-      margin-bottom: 15px;
-    }
-
-    .info p {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #333;
-      max-width: 700px;
-      margin: auto;
-    }
-
-    .reviews {
-      background: #eef3ff;
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    .review-card {
-      background:white; 
-      padding:20px; 
-      border-radius:12px; 
-      box-shadow:0 4px 12px rgba(0,0,0,0.1); 
-      text-align:left;
-    }
-
-    .review-header {
-      display:flex; 
-      justify-content:space-between; 
-      align-items:center; 
-      flex-wrap:wrap;
-    }
-
-    /* Language Popup */
-    #langPopup {
-      display:none; 
-      position:fixed; 
-      top:0; 
-      left:0; 
-      width:100%; 
-      height:100%;
-      background:rgba(0,0,0,0.5); 
-      justify-content:center; 
-      align-items:center; 
-      z-index:9999;
-    }
-
-    #langPopup .popup-content {
-      background:white; 
-      padding:30px 25px; 
-      border-radius:14px; 
-      width:90%; 
-      max-width:330px; 
-      text-align:center;
-      box-shadow:0 6px 20px rgba(0,0,0,0.2); 
-      animation:pop 0.3s ease;
-    }
-
-    @keyframes pop {
-      0% { transform:scale(0.7); opacity:0; }
-      100% { transform:scale(1); opacity:1; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Sliding Banner Top -->
-  <div class="slider">
-    <div class="slide-text">Welcome to AI Verified Smart RTI — Fast • Secure • Transparent</div>
-  </div>
-
-  <!-- Hero Section -->
-  <div class="hero">
-    <!-- Logo -->
-    <img src="logo.png" alt="Smart RTI Logo" class="logo" />
-
-    <h1>Smart <span>RTI</span></h1>
-    <p>AI Powered • Fast • Secure</p>
-    <a href="login.html" class="btn">LOGIN</a>
-
-    <!-- Language Button below LOGIN -->
-    <button id="langButton" onclick="document.getElementById('langPopup').style.display='flex'">🌐 Language</button>
-  </div>
-
-  <!-- Language Popup -->
-  <div id="langPopup">
-    <div class="popup-content">
-      <h2 style="font-size:24px; margin-bottom:20px; color:#2c3e50;">Select Language</h2>
-      <button onclick="changeLanguage('en')" style="padding:12px 20px; margin-bottom:15px; width:100%; border:none; border-radius:8px; background:#4a90e2; color:white; font-size:16px; cursor:pointer;">English</button>
-      <button onclick="changeLanguage('hi')" style="padding:12px 20px; width:100%; border:none; border-radius:8px; background:#e24a4a; color:white; font-size:16px; cursor:pointer;">हिन्दी</button>
-      <p onclick="document.getElementById('langPopup').style.display='none'" style="margin-top:18px; font-size:15px; color:#555; cursor:pointer;">Close ✖</p>
-    </div>
-  </div>
-
-  <!-- Info Sections -->
-  <div class="info">
-    <h2 id="rti_heading">RTI क्यों ज़रूरी है?</h2>
-    <p id="rti_text">
-      RTI नागरिकों को पारदर्शिता देता है और सरकारी प्रक्रियाओं को जवाबदेह बनाता है।
-      Smart RTI आपकी RTI प्रक्रिया को और भी सुरक्षित बनाता है क्योंकि इसमें AI आधारित Real‑time Verification मौजूद है।
-    </p>
-  </div>
-
-  <div class="info" style="background:#e8faff; margin-top:0; padding:45px 20px;">
-    <h2 style='font-size:30px; color:#005f73; margin-bottom:15px;'>Smart RTI की विशेषताएँ</h2>
-    <div style='max-width:900px; margin:auto; text-align:left;'>
-      <ul style='font-size:18px; line-height:1.8; color:#222;'>
-        <li><strong>AI Fake RTI Detection:</strong> गलत इनपुट, mismatched IDs और suspicious activities तुरंत detect होती हैं।</li>
-        <li><strong>Live Status Tracking:</strong> RTI सबमिट होते ही real‑time tracking मिलता है।</li>
-        <li><strong>Auto‑Document Verification:</strong> Aadhaar / PAN / Address proofs AI द्वारा verify होते हैं।</li>
-        <li><strong>Error‑Free RTI Filling:</strong> Form भरते समय AI real-time errors बताकर rejection रोकता है।</li>
-        <li><strong>Secure Encryption:</strong> आपकी जानकारी उच्च स्तर की सुरक्षा में रहती है।</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="info" style="background:#fff7e6; padding:50px 20px; text-align:center;">
-    <h2 style='font-size:30px; color:#d97706;'>RTI प्रक्रिया कैसे होती है?</h2>
-    <div style='max-width:850px; margin:auto; text-align:left; padding-top:15px;'>
-      <ol style='font-size:18px; color:#333; line-height:1.8;'>
-        <li><strong>Step 1:</strong> RTI फॉर्म में अपनी जानकारी और सवाल लिखें।</li>
-        <li><strong>Step 2:</strong> AI आपकी details verify करता है और Fake information flag करता है।</li>
-        <li><strong>Step 3:</strong> आपका RTI सही सरकारी विभाग को Auto‑Route होता है।</li>
-        <li><strong>Step 4:</strong> आप अपने मोबाइल से RTI का Real‑time Status देख सकते हैं।</li>
-      </ol>
-    </div>
-  </div>
-
-  <div class="reviews">
-    <h2 id="review_title" style="font-size:30px; margin-bottom:25px; color:#2c3e50;">User Reviews</h2>
-    <div style="display:flex; flex-direction:column; gap:20px; max-width:900px; margin:auto;">
-      <div class="review-card">
-        <div class="review-header">
-          <p style="font-size:18px; font-weight:600; margin:0;">Rahul Sharma</p>
-          <p style="font-size:20px; margin:0;">⭐⭐⭐⭐⭐</p>
-        </div>
-        <p id="rev1" style="font-size:16px; color:#333; margin-top:10px; line-height:1.6;">"Smart RTI ने मेरी फर्जी RTI को तुरंत पकड़ लिया। बहुत ही शानदार फीचर है!"</p>
-      </div>
-
-      <div class="review-card">
-        <div class="review-header">
-          <p style="font-size:18px; font-weight:600; margin:0;">Anjali Verma</p>
-          <p style="font-size:20px; margin:0;">⭐⭐⭐⭐</p>
-        </div>
-        <p id="rev2" style="font-size:16px; color:#333; margin-top:10px; line-height:1.6;">"AI Validation बहुत fast है और सिस्टम उपयोग करने में आसान है।"</p>
-      </div>
-
-      <div class="review-card">
-        <div class="review-header">
-          <p style="font-size:18px; font-weight:600; margin:0;">Mohit Singh</p>
-          <p style="font-size:20px; margin:0;">⭐⭐⭐⭐⭐</p>
-        </div>
-        <p id="rev3" style="font-size:16px; color:#333; margin-top:10px; line-height:1.6;">"Fake details को detect करना बहुत ही helpful है। Highly recommended!"</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const langData = {
-      en: {
-        rti_heading: "Why is RTI Important?",
-        rti_text: "RTI provides transparency and keeps government departments accountable. Smart RTI makes the process secure with AI-based verification.",
-        review_title: "User Reviews",
-        rev1: "Smart RTI immediately detected my fake RTI. Amazing feature!",
-        rev2: "AI validation is very fast and the system is easy to use.",
-        rev3: "Detecting fake details is very helpful. Highly recommended!"
-      },
-      hi: {
-        rti_heading: "RTI क्यों ज़रूरी है?",
-        rti_text: "RTI नागरिकों को पारदर्शिता देता है और सरकारी प्रक्रियाओं को जवाबदेह बनाता है। Smart RTI आपकी प्रक्रिया सुरक्षित बनाता है।",
-        review_title: "यूज़र रिव्यू",
-        rev1: "Smart RTI ने मेरी फर्जी RTI को तुरंत पकड़ लिया। बहुत ही शानदार फीचर है!",
-        rev2: "AI Validation बहुत fast है और सिस्टम उपयोग करने में आसान है।",
-        rev3: "Fake details को detect करना बहुत ही helpful है। Highly recommended!"
-      }
-    };
-
-    function changeLanguage(lang) {
-      document.getElementById('rti_heading').innerHTML = langData[lang].rti_heading;
-      document.getElementById('rti_text').innerHTML = langData[lang].rti_text;
-      document.getElementById('review_title').innerHTML = langData[lang].review_title;
-      document.getElementById('rev1').innerHTML = langData[lang].rev1;
-      document.getElementById('rev2').innerHTML = langData[lang].rev2;
-      document.getElementById('rev3').innerHTML = langData[lang].rev3;
-      document.getElementById('langPopup').style.display = 'none';
-    }
-  </script>
-
-</body>
-</html>
+  </div>    <!-- OFFICER LOGIN MODAL -->    <div id="officerModal" class="modal">  
+    <div class="modal-content">  
+      <span class="close-btn" onclick="closeOfficerLogin()">×</span>  
+      <h3>Officer Login</h3>  
+      <input type="text" id="adminID" placeholder="Admin ID">  
+      <input type="password" id="adminPass" placeholder="Password">  
+      <button onclick="loginOfficer()">Login</button>  
+    </div>  
+  </div>  
+</div>  <!-- AI NOTIFICATION BOX -->  <div id="aiNotification"></div>  <script src="https://api.backendless.com/sdk/js/latest/backendless.min.js"></script>  <script>  
+/* ===== BACKENDLESS INIT ===== */  
+const APP_ID = "A1EFA0A2-9F5F-4AB4-B41A-34610BD8119F";  
+const JS_API_KEY = "F7F4D0E1-9677-4715-8C0E-F1FD819B9D69";  
+Backendless.initApp(APP_ID, JS_API_KEY);  
+  
+/* ===== HELPERS ===== */  
+const id = x => document.getElementById(x);  
+  
+/* ===== AI NOTIFICATION ===== */  
+function showNotification(message, duration=3000){  
+    const box = id('aiNotification');  
+    box.innerText = message;  
+    box.style.display = 'block';  
+    box.style.opacity = '1';  
+    setTimeout(() => {  
+        box.style.transition = 'opacity 0.5s';  
+        box.style.opacity = '0';  
+        setTimeout(()=> { box.style.display = 'none'; box.style.transition=''; }, 500);  
+    }, duration);  
+}  
+  
+/* ===== MENU TOGGLE ===== */  
+const menuToggle = id("menuToggle");  
+const menuItems = id("menuItems");  
+function toggleMenu() {  
+    if(menuItems) menuItems.style.display = menuItems.style.display === "flex" ? "none" : "flex";  
+}  
+function closeMenu() { if(menuItems) menuItems.style.display = "none"; }  
+if(menuToggle) menuToggle.onclick = toggleMenu;  
+  
+/* ===== SECTION SWITCHERS ===== */  
+window.showLogin = () => {  
+  if(id("register-form")) id("register-form").style.display="none";  
+  if(id("forgot-form")) id("forgot-form").style.display="none";  
+  if(id("login-form")) id("login-form").style.display="flex";   
+}  
+window.showRegister = () => {  
+  if(id("login-form")) id("login-form").style.display="none";  
+  if(id("forgot-form")) id("forgot-form").style.display="none";  
+  if(id("register-form")) id("register-form").style.display="flex";   
+}  
+window.showForgot = () => {  
+  if(id("login-form")) id("login-form").style.display="none";  
+  if(id("register-form")) id("register-form").style.display="none";  
+  if(id("forgot-form")) id("forgot-form").style.display="flex";   
+}  
+  
+/* ===== REGISTER ===== */  
+window.registerUser = async () => {  
+  const user = new Backendless.User();  
+  user.name = id("regName").value.trim();  
+  user.email = id("regEmail").value.trim();  
+  user.mobile = id("regMobile").value.trim();  
+  user.password = id("regPassword").value.trim();  
+  user.role = "citizen";  
+  try {  
+    await Backendless.UserService.register(user);  
+    showNotification("Registration successful! You can now login.");  
+    showLogin();  
+  } catch(err) {  
+    console.error(err);  
+    showNotification("Registration failed: " + err.message);  
+  }  
+}  
+  
+/* ===== LOGIN ===== */  
+window.loginUser = async () => {  
+  const email = id("loginEmail").value.trim();  
+  const pass = id("loginPassword").value.trim();  
+  if(!email || !pass) return showNotification("Enter email and password");  
+  try {  
+    const user = await Backendless.UserService.login(email, pass, true);  
+    localStorage.setItem("userRole", user.role || "citizen");  
+    localStorage.setItem("userEmail", user.email);  
+    showNotification("Login successful! Redirecting...");  
+    setTimeout(()=>{ window.location.href = "dashboard.html"; }, 1200);  
+  } catch(err) {  
+    console.error(err);  
+    showNotification("Login failed: " + err.message);  
+  }  
+}  
+  
+/* ===== FORGOT PASSWORD ===== */  
+window.forgotPassword = async () => {  
+  const email = id("forgotEmail").value.trim();  
+  if(!email) return showNotification("Enter email");  
+  try {  
+    await Backendless.UserService.restorePassword(email);  
+    showNotification("Reset link sent! Check your email.");  
+    showLogin();  
+  } catch(err) {  
+    console.error(err);  
+    showNotification("Error: " + err.message);  
+  }  
+}  
+  
+/* ===== OFFICER LOGIN ===== */  
+const officerModal = id("officerModal");  
+function openOfficerLogin(){   
+  if(officerModal){  
+    officerModal.style.display="flex";   
+    officerModal.style.opacity=0;   
+    officerModal.style.transition="opacity 0.4s ease";   
+    setTimeout(()=>{ officerModal.style.opacity=1; },10);   
+  }   
+}  
+function closeOfficerLogin(){   
+  if(officerModal){  
+    officerModal.style.opacity=0;   
+    setTimeout(()=>{ officerModal.style.display="none"; },400);   
+  }   
+}  
+function loginOfficer(){  
+  const uid = id("adminID").value.trim();  
+  const pass = id("adminPass").value.trim();  
+  if(uid==="new123" && pass==="password"){  
+    closeOfficerLogin();  
+    localStorage.setItem("userRole", "officer");  
+    showNotification("Officer login successful!");  
+    setTimeout(()=>{ window.location.href="offlice panel.html"; }, 1200);  
+  } else showNotification("Invalid Admin Credentials!");  
+}  
+</script>  
+</body>  
+</html>  
